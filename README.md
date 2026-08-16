@@ -1,4 +1,4 @@
-# Bask AI — Mental Wellness & Wearable Ecosystem
+
 
 ![Android](https://img.shields.io/badge/Platform-Android-green?style=for-the-badge&logo=android)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.0-purple?style=for-the-badge&logo=kotlin)
