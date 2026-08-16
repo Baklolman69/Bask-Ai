@@ -1,0 +1,8 @@
+## Local Properties Configuration Example
+# Copy this file to `local.properties` in your project root and update the values.
+
+# Path to the Android SDK installation
+sdk.dir=C\:\\Users\\USERNAME\\AppData\\Local\\Android\\Sdk
+
+# Optional: Groq AI Cloud API Key for AI reflection features
+GROQ_API_KEY=gsk_your_groq_api_key_here
