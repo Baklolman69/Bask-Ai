@@ -27,7 +27,7 @@ Bask AI has a lot of features that help with wellness. It has AI reflections, mo
 The technology used to build Bask AI includes:
 
 * Kotlin 2.0 Jetpack Compose, Material 3 and Lottie Animations for the user interface
-* - **Embedded Web Modules**: Native `WebView` integration hosting web companion tools.
+*  **Embedded Web Modules**: Native `WebView` integration hosting web companion tools.
 
 * Groq AI Cloud API for intelligence
 
