@@ -6,35 +6,33 @@
 ![Groq AI](https://img.shields.io/badge/AI-Groq%20llama--3.3--70b-orange?style=for-the-badge)
 ![Firebase](https://img.shields.io/badge/Backend-Firebase%20Firestore-yellow?style=for-the-badge&logo=firebase)
 
-# Bask AI — Mental Wellness & Wearable Ecosystem
+Bask AI is a wellness application for Android and Wear OS. It is built with Jetpack Compose. Uses Groq AI and Firebase Cloud Firestore.
 
-![Android](https://img.shields.io/badge/Platform-Android-green?style=for-the-badge&logo=android)
-![Kotlin](https://img.shields.io/badge/Kotlin-2.0-purple?style=for-the-badge&logo=kotlin)
-![Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-blue?style=for-the-badge&logo=jetpackcompose)
-![Groq AI](https://img.shields.io/badge/AI-Groq%20llama--3.3--70b-orange?style=for-the-badge)
-![Firebase](https://img.shields.io/badge/Backend-Firebase%20Firestore-yellow?style=for-the-badge&logo=firebase)
+Bask AI has a lot of features that help with wellness. It has AI reflections, mood tracking, smartwatch biometric sync, hydration reminders and interactive wellness tools. All of these features work together to create an ecosystem for mental wellness.
 
-> **Bask AI** is a mental wellness Android & Wear OS application built with **Jetpack Compose**, powered by **Groq AI** (`llama-3.3-70b-versatile`) and **Firebase Cloud Firestore**. It combines proactive AI reflections, mood tracking, smartwatch biometric sync, hydration reminders, and interactive wellness tools into a unified ecosystem.
+🌟 Key Features
 
----
+🤖 The Groq AI Companion gives you real-time reflections on your thoughts and suggests activities for you to do.
 
-## 🌟 Key Features
+😊 You can log your mood with emojis and it will sync with Cloud Firestore. You can also make a custom calendar.
 
-- 🤖 **Groq AI Companion**: Real-time empathetic reflections on user thoughts and intelligent activity recommendations.
-- 😊 **Interactive Mood Log & Custom Calendar**: Dynamic bouncy emoji mood logging synced with Cloud Firestore.
-- ⌚ **Smartwatch Pairing**: 6-digit handshake protocol syncing heart rate, SpO2, and sleep data in real time.
-- 💧 **Hydration Tracker**: WorkManager periodic background worker delivering custom hydration reminders.
+⌚ Bask AI can connect to your smartwatch using a 6-digit protocol. This lets it get your heart rate, SpO2 and sleep data in time.
 
----
+💧 The Hydration Tracker sends you reminders to drink water at the times.
 
-## 🛠️ Technology Stack
+🧘 Bask AI has tools to help you relax like meditation CBT exercises, journaling and AI therapy.
 
-| Layer | Technologies |
-| :--- | :--- |
-| **UI & Framework** | Kotlin 2.0, Jetpack Compose, Material 3, Lottie Animations |
-| **Artificial Intelligence** | Groq AI Cloud API (`llama-3.3-70b-versatile`) |
-| **Backend & Sync** | Firebase Cloud Firestore, Firebase Auth, Google Identity |
-| **Background & Data** | Android WorkManager, Jetpack DataStore Preferences |
+🛠️ Technology Stack
+
+The technology used to build Bask AI includes:
+
+* Kotlin 2.0 Jetpack Compose, Material 3 and Lottie Animations for the user interface
+
+* Groq AI Cloud API for intelligence
+
+* Firebase Cloud Firestore, Firebase Auth and Google Identity for the backend and syncing data
+
+* Android WorkManager and Jetpack DataStore Preferences for background tasks and data storage
 
 ---
 
