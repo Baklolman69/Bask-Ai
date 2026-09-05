@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="AI Therapist — Empathetic AI counseling, virtual therapist companions & interactive mindfulness.">
+    <meta name="theme-color" content="#fffdfa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Ai Therapist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- App Shell -->
+    <div id="app-shell">
+
+        <!-- Character Selection Overlay Modal (Shows before starting chat or when switching) -->
+        <div class="char-select-overlay" id="char-select-modal">
+            <div class="char-select-card">
+                <div class="char-select-header">
+                    <span class="char-select-badge">✨ Select Your AI Companion</span>
+                    <h2 class="char-select-title">Choose Your Therapist</h2>
+                    <p class="char-select-subtitle">Select a virtual AI therapist tailored to your needs today.</p>
+                </div>
+                <div class="char-grid">
+                    <!-- Dr. Alex -->
+                    <div class="char-card selected" data-char="alex">
+                        <div class="char-avatar avatar-blue">
+                            <span>👨‍⚕️</span>
+                        </div>
+                        <div class="char-info">
+                            <div class="char-title-row">
+                                <span class="char-name">Dr. Alex</span>
+                                <span class="char-tag badge-blue">Anxiety & Stress</span>
+                            </div>
+                            <p class="char-desc">Calm, grounding & empathetic clinical specialist.</p>
+                            <span class="char-voice-pill">🎙️ Adam Voice (ElevenLabs)</span>
+                        </div>
+                    </div>
+
+                    <!-- Lexi -->
+                    <div class="char-card" data-char="lexi">
+                        <div class="char-avatar avatar-pink">
+                            <span>🌸</span>
+                        </div>
+                        <div class="char-info">
+                            <div class="char-title-row">
+                                <span class="char-name">Lexi</span>
+                                <span class="char-tag badge-pink">Emotional Support</span>
+                            </div>
+                            <p class="char-desc">Warm, supportive friend for self-love & mood boost.</p>
+                            <span class="char-voice-pill">🎙️ Bella Voice (ElevenLabs)</span>
+                        </div>
+                    </div>
+
+                    <!-- Dr. Kai -->
+                    <div class="char-card" data-char="kai">
+                        <div class="char-avatar avatar-teal">
+                            <span>🧘‍♂️</span>
+                        </div>
+                        <div class="char-info">
+                            <div class="char-title-row">
+                                <span class="char-name">Dr. Kai</span>
+                                <span class="char-tag badge-teal">Mindfulness & CBT</span>
+                            </div>
+                            <p class="char-desc">Structured, mindful guide for mental clarity.</p>
+                            <span class="char-voice-pill">🎙️ Antoni Voice (ElevenLabs)</span>
+                        </div>
+                    </div>
+
+                    <!-- Nova -->
+                    <div class="char-card" data-char="nova">
+                        <div class="char-avatar avatar-purple">
+                            <span>🌙</span>
+                        </div>
+                        <div class="char-info">
+                            <div class="char-title-row">
+                                <span class="char-name">Nova</span>
+                                <span class="char-tag badge-purple">Sleep & Unwinding</span>
+                            </div>
+                            <p class="char-desc">Soothing, peaceful night & relaxation companion.</p>
+                            <span class="char-voice-pill">🎙️ Rachel Voice (ElevenLabs)</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="char-submit-btn" id="char-submit-btn">Start Therapy with Dr. Alex ➔</button>
+            </div>
+        </div>
+
+        <!-- Header Bar -->
+        <header class="app-header">
+            <!-- Hamburger Menu Button -->
+            <button class="header-btn" id="hamburger-btn" aria-label="Open menu" title="Menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <!-- Center Therapist Status -->
+            <div class="header-center" id="header-center-btn" style="cursor: pointer;" title="Tap to switch therapist">
+                <div class="header-title-row">
+                    <span class="active-avatar-icon" id="active-header-avatar">👨‍⚕️</span>
+                    <h1 class="header-title" id="header-title">Dr. Alex</h1>
+                </div>
+                <span class="header-status">● Online & Ready to Listen</span>
+            </div>
+
+            <!-- Right Header Actions -->
+            <div class="header-actions">
+                <button class="emergency-header-btn" id="emergency-header-btn" aria-label="Emergency Crisis Helpline" title="Emergency Lifeline Numbers">
+                    <span>🆘</span>
+                    <span class="emergency-btn-label">SOS</span>
+                </button>
+                <button class="header-btn" id="new-session-header-btn" aria-label="New Session" title="Start new session">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Hamburger Drawer Backdrop & Slide-Over Panel -->
+        <div class="drawer-overlay hidden" id="drawer-overlay"></div>
+        <aside class="hamburger-drawer hidden" id="hamburger-drawer">
+            <div class="drawer-header">
+                <div class="drawer-user-info">
+                    <span class="active-avatar-icon large" id="drawer-avatar">👨‍⚕️</span>
+                    <div>
+                        <h3 class="drawer-therapist-name" id="drawer-therapist-name">Dr. Alex</h3>
+                        <span class="drawer-therapist-badge" id="drawer-therapist-badge">Anxiety & Stress</span>
+                    </div>
+                </div>
+                <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="drawer-body">
+                <!-- Switch Therapist -->
+                <button class="drawer-menu-item accent" id="switch-char-drawer-btn">
+                    <span class="menu-icon">🎭</span>
+                    <div class="menu-text-group">
+                        <span class="menu-item-title">Switch AI Therapist</span>
+                        <span class="menu-item-desc">Alex, Lexi, Kai or Nova</span>
+                    </div>
+                    <span class="menu-arrow">➔</span>
+                </button>
+
+                <!-- Daily Mood Check-In Widget -->
+                <div class="drawer-section">
+                    <div class="drawer-section-header">
+                        <span class="drawer-section-title">Daily Mood Check-in</span>
+                        <span class="streak-pill">🔥 4 Day Streak</span>
+                    </div>
+                    <div class="mood-emojis-row">
+                        <button class="mood-btn" data-mood="peaceful">😊<span>Peaceful</span></button>
+                        <button class="mood-btn" data-mood="anxious">😔<span>Anxious</span></button>
+                        <button class="mood-btn" data-mood="stressed">😤<span>Stressed</span></button>
+                        <button class="mood-btn" data-mood="exhausted">😴<span>Tired</span></button>
+                        <button class="mood-btn" data-mood="happy">🌟<span>Happy</span></button>
+                    </div>
+                </div>
+
+                <!-- Ambient Soundscapes -->
+                <div class="drawer-section">
+                    <span class="drawer-section-title">🎵 Ambient Soundscapes</span>
+                    <div class="ambient-options">
+                        <button class="ambient-chip active" data-sound="off">Off</button>
+                        <button class="ambient-chip" data-sound="rain">🌧️ Rain</button>
+                        <button class="ambient-chip" data-sound="waves">🌊 Waves</button>
+                        <button class="ambient-chip" data-sound="binaural">🧘 432Hz</button>
+                        <button class="ambient-chip" data-sound="forest">🌲 Forest</button>
+                    </div>
+                </div>
+
+                <!-- ElevenLabs Voice Settings -->
+                <div class="drawer-section">
+                    <span class="drawer-section-title">🎙️ ElevenLabs Key (Optional)</span>
+                    <div class="eleven-key-wrap">
+                        <input type="password" id="eleven-key-input" class="eleven-key-input" placeholder="Paste sk_... key for ElevenLabs">
+                        <button id="eleven-key-save-btn" class="eleven-key-save-btn">Save Key</button>
+                    </div>
+                    <span class="eleven-key-hint" id="eleven-key-hint">✨ Uses natural human voice stream by default.</span>
+                </div>
+
+                <!-- Menu Tools -->
+                <div class="drawer-menu-list">
+                    <button class="drawer-menu-item crisis-menu-item" id="emergency-drawer-btn">
+                        <span class="menu-icon">🆘</span>
+                        <div class="menu-text-group">
+                            <span class="menu-item-title" style="color: #dc2626; font-weight: 800;">Emergency Crisis Support</span>
+                            <span class="menu-item-desc">24/7 Lifelines & Free Resources</span>
+                        </div>
+                        <span class="menu-arrow" style="color: #dc2626;">➔</span>
+                    </button>
+
+                    <button class="drawer-menu-item" id="ai-report-drawer-btn">
+                        <span class="menu-icon">📊</span>
+                        <div class="menu-text-group">
+                            <span class="menu-item-title">Generate AI Mood Report</span>
+                            <span class="menu-item-desc">Groq AI wellness analysis</span>
+                        </div>
+                    </button>
+
+                    <button class="drawer-menu-item" id="toggle-cards-drawer-btn">
+                        <span class="menu-icon">🧘</span>
+                        <div class="menu-text-group">
+                            <span class="menu-item-title">Mindfulness Exercises</span>
+                            <span class="menu-item-desc">Breathing, Grounding & Body Scan</span>
+                        </div>
+                    </button>
+
+                    <button class="drawer-menu-item" id="new-chat-drawer-btn">
+                        <span class="menu-icon">➕</span>
+                        <div class="menu-text-group">
+                            <span class="menu-item-title">New Therapy Session</span>
+                            <span class="menu-item-desc">Clear chat & start fresh</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Clean Chat Canvas Container -->
+        <main class="chat-container" id="chat-container">
+            <!-- Date Badge -->
+            <div class="date-badge-wrap">
+                <span class="date-badge">Today</span>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div class="messages-list" id="messages-list">
+                <!-- AI Welcome Messages dynamically injected via script.js -->
+
+                <!-- Typing Dots & 15s Timeout Indicator -->
+                <div class="msg-group ai-msg-group typing-group hidden" id="typing-indicator">
+                    <div class="bot-avatar" id="typing-avatar">
+                        <span>👨‍⚕️</span>
+                    </div>
+                    <div class="typing-indicator-wrap">
+                        <div class="typing-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <div class="timeout-timer-badge" id="timeout-timer-badge">
+                            <span class="timer-icon">⏱️</span>
+                            <span class="timer-text" id="timer-text">Safety Timeout: 15s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Exercise Carousel Section -->
+                <div class="carousel-section" id="carousel-section">
+                    <div class="carousel-header">
+                        <span class="carousel-tag">✨ Recommended Mindfulness</span>
+                    </div>
+                    <div class="cards-carousel">
+                        <!-- Breathing Exercise Card -->
+                        <div class="exercise-card card-yellow" data-type="breathing">
+                            <div class="card-art">
+                                <svg viewBox="0 0 120 120" fill="none" class="card-svg">
+                                    <circle cx="60" cy="60" r="50" fill="#fef08a" opacity="0.6"/>
+                                    <path d="M 60 30 C 50 30, 45 45, 45 55 C 45 70, 60 85, 60 85 C 60 85, 75 70, 75 55 C 75 45, 70 30, 60 30 Z" fill="#38bdf8"/>
+                                    <circle cx="60" cy="48" r="9" fill="#1e293b"/>
+                                    <path d="M 45 75 C 45 62, 75 62, 75 75 L 75 92 L 45 92 Z" fill="#3b82f6"/>
+                                </svg>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">Breathing<br>Exercise</span>
+                                <button class="card-action-btn" aria-label="Start breathing exercise">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Body Scan Meditation Card -->
+                        <div class="exercise-card card-peach" data-type="bodyscan">
+                            <div class="card-art">
+                                <svg viewBox="0 0 120 120" fill="none" class="card-svg">
+                                    <circle cx="60" cy="60" r="50" fill="#bae6fd" opacity="0.6"/>
+                                    <circle cx="30" cy="30" r="2.5" fill="#38bdf8"/>
+                                    <circle cx="95" cy="35" r="3" fill="#a78bfa"/>
+                                    <circle cx="60" cy="45" r="9" fill="#1e293b"/>
+                                    <path d="M 48 70 C 42 75, 55 85, 60 85 C 65 85, 78 75, 72 70 C 68 65, 52 65, 48 70 Z" fill="#0284c7"/>
+                                    <path d="M 52 58 C 52 52, 68 52, 68 58 L 70 74 L 50 74 Z" fill="#38bdf8"/>
+                                </svg>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">Body Scan<br>Meditation</span>
+                                <button class="card-action-btn" aria-label="Start body scan meditation">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Grounding Technique Card -->
+                        <div class="exercise-card card-lavender" data-type="grounding">
+                            <div class="card-art">
+                                <svg viewBox="0 0 120 120" fill="none" class="card-svg">
+                                    <circle cx="60" cy="60" r="50" fill="#ddd6fe" opacity="0.6"/>
+                                    <circle cx="60" cy="60" r="35" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6 6"/>
+                                    <circle cx="60" cy="60" r="14" fill="#a78bfa"/>
+                                </svg>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">5-4-3-2-1<br>Grounding</span>
+                                <button class="card-action-btn" aria-label="Start grounding exercise">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Gratitude Journal Card -->
+                        <div class="exercise-card card-mint" data-type="gratitude">
+                            <div class="card-art">
+                                <svg viewBox="0 0 120 120" fill="none" class="card-svg">
+                                    <circle cx="60" cy="60" r="50" fill="#a7f3d0" opacity="0.6"/>
+                                    <path d="M 60 40 C 50 25, 30 35, 35 55 C 40 75, 60 90, 60 90 C 60 90, 80 75, 85 55 C 90 35, 70 25, 60 40 Z" fill="#059669"/>
+                                </svg>
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">Gratitude<br>Reflections</span>
+                                <button class="card-action-btn" aria-label="Start gratitude reflection">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Quick Prompts Chips Bar -->
+        <div class="quick-prompts-bar" id="quick-prompts-bar">
+            <button class="prompt-chip" data-prompt="I'm feeling stressed and anxious today">💬 Feeling Stressed</button>
+            <button class="prompt-chip" data-prompt="Can you recommend a mindfulness exercise to relax?">🧘 Relaxation Exercise</button>
+            <button class="prompt-chip" data-prompt="I'm having trouble sleeping tonight">😴 Help Me Sleep</button>
+            <button class="prompt-chip" data-prompt="I feel overwhelmed with work and life">🤯 Overwhelmed</button>
+        </div>
+
+        <!-- Plus Action Drawer -->
+        <div class="action-drawer hidden" id="action-drawer">
+            <div class="drawer-grid">
+                <button class="drawer-btn" data-prompt="Guide me through a 2-minute breathing exercise">
+                    <span class="drawer-icon">🫁</span>
+                    <span>Deep Breathing</span>
+                </button>
+                <button class="drawer-btn" data-prompt="I feel a panic attack coming on, help me ground myself">
+                    <span class="drawer-icon">🛡️</span>
+                    <span>Panic Reset</span>
+                </button>
+                <button class="drawer-btn" data-prompt="Give me positive affirmations for self-love and confidence">
+                    <span class="drawer-icon">✨</span>
+                    <span>Affirmations</span>
+                </button>
+                <button class="drawer-btn" data-prompt="Help me process a difficult emotion I am holding onto">
+                    <span class="drawer-icon">🌱</span>
+                    <span>Process Emotion</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Input Bar Section -->
+        <footer class="input-bar-section">
+            <form class="input-form" id="input-form">
+                <div class="input-pill">
+                    <button type="button" class="plus-btn" id="plus-btn" aria-label="Quick actions">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                    </button>
+                    <input type="text" class="chat-input" id="chat-input" placeholder="Ask me everything..." autocomplete="off">
+                </div>
+                <button type="submit" class="send-btn" id="send-btn" aria-label="Send message">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </form>
+        </footer>
+
+        <!-- Interactive Mindfulness Modal -->
+        <div class="modal-overlay hidden" id="exercise-modal">
+            <div class="modal-card">
+                <button class="modal-close" id="modal-close" aria-label="Close modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                </button>
+                <div class="modal-header">
+                    <span class="modal-badge" id="modal-badge">Mindfulness</span>
+                    <h2 class="modal-title" id="modal-title">Box Breathing (4-4-4-4)</h2>
+                </div>
+                <div class="modal-body">
+                    <!-- Interactive Visualizer Circle -->
+                    <div class="breath-visualizer-wrap">
+                        <div class="breath-circle" id="breath-circle">
+                            <span class="breath-state" id="breath-state">Inhale</span>
+                            <span class="breath-timer" id="breath-timer">4</span>
+                        </div>
+                    </div>
+                    <p class="modal-guide-text" id="modal-guide-text">Follow the rhythm to soothe your nervous system.</p>
+                    <div class="modal-controls">
+                        <button class="primary-modal-btn" id="modal-start-btn">Start Exercise</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Mood Report Modal -->
+        <div class="modal-overlay hidden" id="report-modal">
+            <div class="modal-card report-card">
+                <button class="modal-close" id="report-close" aria-label="Close report">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                </button>
+                <div class="modal-header">
+                    <span class="modal-badge" style="background:#dbeafe; color:#1e40af;">📊 Groq AI Analysis</span>
+                    <h2 class="modal-title">Your Wellness Report</h2>
+                </div>
+                <div class="modal-body" id="report-body">
+                    <div class="report-skeleton">
+                        <p style="color:#64748b; font-size:0.9rem;">✨ Analyzing your chat history & emotional patterns...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Crisis Support Modal -->
+        <div class="modal-overlay hidden" id="crisis-modal">
+            <div class="modal-card crisis-modal-card">
+                <button class="modal-close" id="crisis-close" aria-label="Close crisis overlay">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                </button>
+                <div class="crisis-modal-header">
+                    <span class="crisis-badge">🆘 Immediate Crisis Support</span>
+                    <h2 class="crisis-title">You Are Not Alone</h2>
+                    <p class="crisis-subtitle">If you are going through a mental health emergency, having thoughts of self-harm, or feeling overwhelmed, free confidential help is available right now.</p>
+                </div>
+                <div class="crisis-hotlines-list">
+                    <a href="tel:988" class="hotline-card primary-hotline">
+                        <div class="hotline-icon">📞</div>
+                        <div class="hotline-info">
+                            <span class="hotline-name">988 Suicide & Crisis Lifeline</span>
+                            <span class="hotline-detail">Call or Text 988 (US & Canada • Free 24/7)</span>
+                        </div>
+                        <span class="hotline-action">Call 988</span>
+                    </a>
+                    <a href="sms:741741?body=HOME" class="hotline-card secondary-hotline">
+                        <div class="hotline-icon">💬</div>
+                        <div class="hotline-info">
+                            <span class="hotline-name">Crisis Text Line</span>
+                            <span class="hotline-detail">Text HOME to 741741 (Free 24/7 Support)</span>
+                        </div>
+                        <span class="hotline-action">Text 741741</span>
+                    </a>
+                    <a href="tel:116123" class="hotline-card uk-hotline">
+                        <div class="hotline-icon">🇬🇧</div>
+                        <div class="hotline-info">
+                            <span class="hotline-name">UK Samaritans & NHS</span>
+                            <span class="hotline-detail">Call 116 123 (Samaritans) or 111 / 999</span>
+                        </div>
+                        <span class="hotline-action">Call 116 123</span>
+                    </a>
+                    <a href="tel:919152987821" class="hotline-card india-hotline">
+                        <div class="hotline-icon">🇮🇳</div>
+                        <div class="hotline-info">
+                            <span class="hotline-name">India Vandrevala Helpline</span>
+                            <span class="hotline-detail">Call +91 9999 666 555 or 112 Emergency</span>
+                        </div>
+                        <span class="hotline-action">Call Helpline</span>
+                    </a>
+                    <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer" class="hotline-card global-hotline">
+                        <div class="hotline-icon">🌐</div>
+                        <div class="hotline-info">
+                            <span class="hotline-name">International Helplines</span>
+                            <span class="hotline-detail">Find crisis resources in 130+ countries</span>
+                        </div>
+                        <span class="hotline-action">Find Line ➔</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
