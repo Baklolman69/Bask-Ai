@@ -36,6 +36,12 @@ import com.tensormind.feelio.data.UserData
 import com.tensormind.feelio.ui.theme.FeelioColors
 import kotlinx.coroutines.launch
 
+/**
+ * Main Jetpack Compose screen for tracking daily hydration intake.
+ *
+ * Handles live water glass logging, interactive volume calculations (in ml),
+ * spring-animated progress indicators, dynamic Bask AI compliments, and daily targets.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HydrationScreen(
