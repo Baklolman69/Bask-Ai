@@ -131,9 +131,9 @@ Hydration reminders are driven by Android `WorkManager` (`HydrationWorker.kt`):
 
 ---
 
-## WebView & Fullscreen Insets
+## WebView & Web Companion Assets
 
-Embedded web tools (Meditation, CBT assessment, Journal, Virtual Pet) load remote/web URLs via `WebViewScreen.kt`.
+Embedded web tools (Meditation, CBT assessment, Journal, Virtual Pet, AI Therapist) load remote or local assets via `WebViewScreen.kt`. Local assets are bundled under `app/src/main/assets/` (`virtual_pet/`, `ai_therapist/`, etc.) for zero-latency offline loading.
 
 To achieve immersive full-screen display without system distraction:
 - System bars and status bars are hidden in `MainActivity.onCreate()` using `WindowInsetsControllerCompat`.
