@@ -160,6 +160,9 @@ object GroqRepository {
         return@withContext "Your sleep duration of ${sleepHours}h and stable heart rate of ${bpm} BPM indicate healthy physiological recovery. Consistent sleep quality supports emotional stability throughout your day."
     }
 
+    /**
+     * Generates a short, positive AI compliment or micro-insight when a user logs a glass of water.
+     */
     suspend fun getHydrationCompliment(glasses: Int, userName: String?): String = withContext(Dispatchers.IO) {
         try {
             val url = URL(ENDPOINT)
