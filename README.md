@@ -12,6 +12,7 @@ Bask AI is a holistic wellness application built for Android and Wear OS using J
 - **😊 Interactive Mood Logging**: Custom mood tracking driven by Jetpack Compose spring animations (`Spring.DampingRatioMediumBouncy`) and synced with Cloud Firestore.
 - **⌚ Smartwatch Biometric Telemetry**: 6-digit handshake protocol pairing the app with Wear OS devices or web emulators to stream real-time heart rate, SpO2, and sleep statistics.
 - **💧 Smart Hydration Coaching & Alerts**: Periodic Android `WorkManager` background worker delivering customized hydration prompts every 3 hours alongside interactive glass volume tracking.
+- **🐾 Virtual Pet & AI Counseling**: Interactive virtual pet companion (`/virtual_pet`) with emotional behavioral algorithms and 4 specialized AI counselor personas (`/ai_therapist`).
 - **🧘 Embedded Web Companion Suite**: Native `WebView` integration hosting web companion tools, including CBT assessment screeners, guided audio meditation, AI therapy personas, and virtual pet interactions.
 
 ---
