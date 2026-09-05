@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Bask Virtual Pet Companion</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Lottie Animation Player CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+
+  <!-- Mobile Frame Container -->
+  <div class="mobile-device">
+
+    <!-- Bottom Toast Banner -->
+    <div id="toast-banner" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px); background: #059669; color: #fff; padding: 0.65rem 1.2rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); z-index: 200; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; white-space: nowrap;">
+      💾 Saved safely to cache memory!
+    </div>
+
+    <!-- Top Header Bar -->
+    <header class="top-bar">
+      <div class="pet-identity">
+        <span class="level-badge" id="display-level">Lv. 1</span>
+        <span class="pet-name-display" id="display-pet-name">Luna</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <div class="coin-badge">
+          <span>🪙</span>
+          <span id="display-coins">80</span>
+        </div>
+        <button class="icon-btn" id="toggle-sound-btn" style="border-radius: 50%; width: 34px; height: 34px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer;" title="Toggle Sound">🔊</button>
+        <button class="icon-btn" id="open-settings-btn" style="border-radius: 50%; width: 34px; height: 34px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer;" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Pet Stage Viewport -->
+    <main class="pet-stage" id="pet-stage-viewport">
+      
+      <!-- Particle Effects Layer -->
+      <div class="particle-container" id="particle-layer"></div>
+
+      <!-- Speech Bubble -->
+      <div class="pet-speech-bubble" id="pet-speech-bubble">
+        *Prrrrrr...* *Slow blinks* Welcome back human servant! ✨
+      </div>
+
+      <!-- Interactive Lottie & SVG Animated Pet Character Box -->
+      <div class="pet-character-box" id="pet-character-box" title="Tap to pet me!">
+        <div id="lottie-pet-container" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+          <!-- Lottie animation rendered here via lottie-web -->
+        </div>
+        <div id="pet-avatar-render" class="pet-svg-avatar" style="display: none;">
+          <!-- SVG Pet Fallback -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Stat Meters Grid -->
+    <section class="stats-container">
+      <div class="stat-box">
+        <span class="stat-icon">🍎</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill fill-hunger" id="bar-hunger" style="width: 80%;"></div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon">✨</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill fill-joy" id="bar-joy" style="width: 85%;"></div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon">⚡</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill fill-energy" id="bar-energy" style="width: 90%;"></div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon">🧼</span>
+        <div class="stat-bar-track">
+          <div class="stat-bar-fill fill-hygiene" id="bar-hygiene" style="width: 95%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Toolbar -->
+    <nav class="action-toolbar">
+      <button class="action-btn" id="btn-action-feed">
+        <span class="action-btn-icon">🐟</span>
+        <span>Treats</span>
+      </button>
+      <button class="action-btn" id="btn-action-laser">
+        <span class="action-btn-icon">🔴</span>
+        <span>Laser</span>
+      </button>
+      <button class="action-btn" id="btn-action-bath">
+        <span class="action-btn-icon">🧼</span>
+        <span>Bath</span>
+      </button>
+      <button class="action-btn" id="btn-action-sleep">
+        <span class="action-btn-icon">😴</span>
+        <span>Rest</span>
+      </button>
+      <button class="action-btn" id="btn-action-arcade">
+        <span class="action-btn-icon">🎮</span>
+        <span>Arcade</span>
+      </button>
+      <button class="action-btn" id="btn-action-shop">
+        <span class="action-btn-icon">🛍️</span>
+        <span>Shop</span>
+      </button>
+      <button class="action-btn" id="btn-action-chat">
+        <span class="action-btn-icon">💬</span>
+        <span>AI Chat</span>
+      </button>
+    </nav>
+
+    <!-- 1. SELECT PET SPECIES MODAL -->
+    <div class="modal-overlay" id="modal-select-pet">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title">Choose Your Virtual Companion 🐾</div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Pick a species to adopt and name your digital buddy!
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.8rem;" id="species-options-list">
+          <div class="shop-card species-card active" data-species="cat">
+            <div style="font-size: 2.5rem;">🐱</div>
+            <div class="shop-card-title">Luna the Animated Cat</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Rich Lottie animations, purring & sassy AI</div>
+          </div>
+          <div class="shop-card species-card" data-species="shiba">
+            <div style="font-size: 2.5rem;">🐶</div>
+            <div class="shop-card-title">Nova the Shiba</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Energetic, playful & loyal</div>
+          </div>
+          <div class="shop-card species-card" data-species="bunny">
+            <div style="font-size: 2.5rem;">🐰</div>
+            <div class="shop-card-title">Mochi the Bunny</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Sweet, fluffy & gentle</div>
+          </div>
+          <div class="shop-card species-card" data-species="dragon">
+            <div style="font-size: 2.5rem;">🐉</div>
+            <div class="shop-card-title">Spark the Baby Dragon</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Cosmic, curious & brave</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+          <input type="text" id="pet-name-input" class="input-text" placeholder="Enter pet name (e.g. Luna)..." value="Luna" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid var(--border-light); font-size: 0.95rem; margin-bottom: 1rem;">
+          <button class="action-btn" id="btn-confirm-adopt" style="background: var(--pastel-green); color: #fff; width: 100%; justify-content: center; padding: 0.8rem;">
+            Adopt Companion ✨
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. FOOD & SHOP MODAL -->
+    <div class="modal-overlay" id="modal-shop">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title" id="shop-title">Pet Bakery & Boutique 🛍️</div>
+          <button class="close-btn" data-modal="modal-shop" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+
+        <div style="display: flex; gap: 0.4rem; margin-bottom: 1rem;" id="shop-tabs">
+          <button class="level-badge active" data-shop-tab="foods">🍎 Treats</button>
+          <button class="level-badge" data-shop-tab="hats">🥳 Hats</button>
+          <button class="level-badge" data-shop-tab="glasses">🕶️ Glasses</button>
+          <button class="level-badge" data-shop-tab="accessories">🎀 Accessories</button>
+        </div>
+
+        <div class="shop-grid" id="shop-items-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ARCADE MINIGAME MODAL -->
+    <div class="modal-overlay" id="modal-arcade">
+      <div class="modal-sheet" style="max-height: 95%;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title">Star Catcher Arcade 🌟</div>
+          <button class="close-btn" data-modal="modal-arcade" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+          Move left/right to catch falling stars for coins! Avoid raindrops 🌧️.
+        </p>
+
+        <div class="arcade-container">
+          <canvas id="minigame-canvas" width="360" height="300"></canvas>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem;">
+          <div style="font-family: var(--font-heading); font-size: 1rem; color: var(--text-dark);" id="arcade-score">Score: 0 | Coins: +0</div>
+          <button class="action-btn" id="btn-start-arcade" style="background: var(--pastel-yellow); color: #854d0e; padding: 0.6rem 1.2rem;">Start Game 🎮</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. GROQ AI PET CHAT MODAL -->
+    <div class="modal-overlay" id="modal-chat">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title">Chat with <span id="chat-pet-name">Luna</span> 💬</div>
+          <button class="close-btn" data-modal="modal-chat" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+
+        <div class="chat-messages" id="chat-messages-box">
+          <div class="chat-bubble pet">*Prrrrrr...* Hello human! Ask me anything or tell me about your day! 🐾</div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" id="pet-chat-input" placeholder="Say something to your pet..." style="flex: 1; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); outline: none;">
+          <button class="action-btn" id="btn-send-pet-chat" style="background: var(--pastel-purple); color: #fff; padding: 0.75rem 1rem;">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. GROQ SETTINGS & CACHE MEMORY CONTROLS MODAL -->
+    <div class="modal-overlay" id="modal-settings">
+      <div class="modal-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title">Settings & Cache Controls 💾</div>
+          <button class="close-btn" data-modal="modal-settings" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Groq API Key</label>
+          <input type="password" id="groq-key-input" placeholder="gsk_..." style="width: 100%; padding: 0.75rem; border-radius: 12px; border: 1px solid var(--border-light); font-size: 0.95rem;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.3rem;">Free key at <a href="https://console.groq.com/keys" target="_blank" style="color: var(--pastel-purple);">console.groq.com/keys</a></span>
+        </div>
+
+        <!-- Cache Controls Box -->
+        <div style="background: var(--pastel-green-light); border: 1px solid #a7f3d0; padding: 0.9rem; border-radius: 14px; margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem;">
+            <div style="font-weight: 700; font-size: 0.85rem; color: #065f46;">💾 Cache Memory Persistence</div>
+            <span id="cache-status-badge" style="font-size: 0.72rem; font-weight: 700; background: #ffffff; color: #059669; padding: 0.15rem 0.5rem; border-radius: 9999px;">Active 🟢</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; background: #ffffff; padding: 0.5rem 0.7rem; border-radius: 8px; font-size: 0.76rem; color: var(--text-dark); margin-bottom: 0.6rem; border: 1px solid #a7f3d0;">
+            <div>Coins: <strong id="cache-coins-val">80 🪙</strong></div>
+            <div>Cache Size: <strong id="cache-size-val">0 KB</strong></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">
+            <button class="action-btn" id="btn-sync-cache" style="padding: 0.4rem 0.5rem; font-size: 0.75rem; background: var(--pastel-green); color: #fff;">🔄 Sync Cache</button>
+            <button class="action-btn" id="btn-export-backup" style="padding: 0.4rem 0.5rem; font-size: 0.75rem; background: var(--pastel-purple); color: #fff;">📥 Export Backup</button>
+            <button class="action-btn" id="btn-import-backup-trigger" style="padding: 0.4rem 0.5rem; font-size: 0.75rem; background: #fff; color: var(--text-dark);">📤 Import Backup</button>
+            <button class="action-btn" id="btn-clear-cache" style="padding: 0.4rem 0.5rem; font-size: 0.75rem; background: #fff; color: #dc2626; border-color: #fca5a5;">🗑️ Reset Cache</button>
+            <input type="file" id="import-backup-file-input" accept=".json" style="display: none;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.6rem;">
+          <button class="action-btn" id="btn-change-pet-species" style="background: var(--pastel-pink-light); color: var(--pastel-pink); flex: 1;">Adopt New Pet 🐾</button>
+          <button class="action-btn" id="btn-save-settings" style="background: var(--pastel-green); color: #fff; flex: 1;">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="cat-algorithm.js"></script>
+  <script src="pet-model.js"></script>
+  <script src="groq-pet-service.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
