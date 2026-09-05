@@ -114,19 +114,19 @@ fun HydrationScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(24.dp),
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Lottie Glass
+                // Lottie Glass Animation
                 LottieAnimation(
                     composition = lottieComposition,
                     iterations = LottieConstants.IterateForever,
-                    modifier = Modifier.size(220.dp)
+                    modifier = Modifier.size(200.dp)
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                // Counter
+                // Counter with Scale Bounce Effect
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
@@ -151,11 +151,14 @@ fun HydrationScreen(
                     Spacer(modifier = Modifier.width(28.dp))
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        var isBouncing by remember { mutableStateOf(false) }
                         val countScale by animateFloatAsState(
-                            targetValue = 1f,
+                            targetValue = if (isBouncing) 1.25f else 1.0f,
                             animationSpec = spring(dampingRatio = 0.5f, stiffness = 300f),
+                            finishedListener = { isBouncing = false },
                             label = "count_scale"
                         )
+
                         Text(
                             text = glassCount.toString(),
                             style = MaterialTheme.typography.displayLarge.copy(
@@ -169,8 +172,8 @@ fun HydrationScreen(
                             }
                         )
                         Text(
-                            text = "Glasses today",
-                            style = MaterialTheme.typography.bodyMedium,
+                            text = "${glassCount * 250} ml intake",
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                             color = FeelioColors.TextSecondary
                         )
                     }
@@ -201,19 +204,87 @@ fun HydrationScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Quick Log Action Chips
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    FilterChip(
+                        selected = false,
+                        onClick = {
+                            glassCount++
+                            userData?.userId?.let { firebaseRepository.logWater(it, glassCount) }
+                            isGenerating = true
+                            scope.launch {
+                                aiCompliment = GroqRepository.getHydrationCompliment(glassCount, userData?.name)
+                                isGenerating = false
+                            }
+                        },
+                        label = { Text("+250 ml (1 Glass)", fontWeight = FontWeight.Medium) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            containerColor = Color.White,
+                            labelColor = Color(0xFF4A90E2)
+                        )
+                    )
+                    FilterChip(
+                        selected = false,
+                        onClick = {
+                            glassCount += 2
+                            userData?.userId?.let { firebaseRepository.logWater(it, glassCount) }
+                            isGenerating = true
+                            scope.launch {
+                                aiCompliment = GroqRepository.getHydrationCompliment(glassCount, userData?.name)
+                                isGenerating = false
+                            }
+                        },
+                        label = { Text("+500 ml (2 Glasses)", fontWeight = FontWeight.Medium) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            containerColor = Color.White,
+                            labelColor = Color(0xFF4A90E2)
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Goal Reached Celebration Banner
+                val targetGoal = hydrationGoal ?: 8
+                if (glassCount >= targetGoal) {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        color = Color(0xFFE8F5E9)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "🎉 Hydration Goal Achieved! Fantastic job keeping hydrated today!",
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                                color = Color(0xFF2E7D32),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
 
                 // AI Feedback Area
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
                         .shadow(
-                            elevation = 10.dp,
-                            shape = RoundedCornerShape(32.dp),
+                            elevation = 8.dp,
+                            shape = RoundedCornerShape(28.dp),
                             ambientColor = Color(0xFF9E86F0).copy(alpha = 0.2f),
                             spotColor = Color(0xFF9E86F0).copy(alpha = 0.3f)
                         ),
-                    shape = RoundedCornerShape(32.dp),
+                    shape = RoundedCornerShape(28.dp),
                     color = Color.White
                 ) {
                     Box(
@@ -224,7 +295,7 @@ fun HydrationScreen(
                         )
                     ) {
                         Column(
-                            modifier = Modifier.padding(24.dp),
+                            modifier = Modifier.padding(20.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -236,16 +307,16 @@ fun HydrationScreen(
                                 color = Color(0xFF9E86F0)
                             )
 
-                            Spacer(modifier = Modifier.height(12.dp))
+                            Spacer(modifier = Modifier.height(10.dp))
 
                             Text(
                                 text = goalExplanation,
-                                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
+                                style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
                                 color = FeelioColors.TextPrimary,
                                 textAlign = TextAlign.Center
                             )
 
-                            Spacer(modifier = Modifier.height(20.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
 
                             AnimatedContent(
                                 targetState = isGenerating,
@@ -257,7 +328,7 @@ fun HydrationScreen(
                                         CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = Color(0xFF9E86F0))
                                         Spacer(modifier = Modifier.width(12.dp))
                                         Text(
-                                            text = "Thinking...",
+                                            text = "Bask AI is analyzing intake...",
                                             style = MaterialTheme.typography.bodySmall,
                                             color = FeelioColors.TextSecondary
                                         )
@@ -283,12 +354,18 @@ fun HydrationScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // Goal Progress
-                val progress = (glassCount / (hydrationGoal?.toFloat() ?: 8f)).coerceIn(0f, 1f)
+                // Smooth Goal Progress Indicator
+                val targetProgress = (glassCount / (targetGoal.toFloat())).coerceIn(0f, 1f)
+                val animatedProgress by animateFloatAsState(
+                    targetValue = targetProgress,
+                    animationSpec = spring(dampingRatio = 0.6f, stiffness = 400f),
+                    label = "smooth_hydration_progress"
+                )
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 12.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -297,30 +374,30 @@ fun HydrationScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Daily Goal",
+                                text = "Daily Target (${targetGoal * 250} ml)",
                                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
                                 color = FeelioColors.TextPrimary
                             )
                             Text(
-                                text = "$hydrationGoal glasses",
+                                text = "$glassCount of $targetGoal glasses logged",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = FeelioColors.TextSecondary
                             )
                         }
                         Text(
-                            text = "${(progress * 100).toInt()}%",
+                            text = "${(targetProgress * 100).toInt()}%",
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Black),
-                            color = Color(0xFF64B5F6)
+                            color = Color(0xFF4A90E2)
                         )
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     LinearProgressIndicator(
-                        progress = { progress },
+                        progress = { animatedProgress },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(12.dp)
                             .clip(CircleShape),
-                        color = Color(0xFF64B5F6),
+                        color = Color(0xFF4A90E2),
                         trackColor = Color.LightGray.copy(alpha = 0.2f)
                     )
                 }
