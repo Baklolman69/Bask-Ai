@@ -42,10 +42,11 @@ Feelio bridges the gap between **emotional awareness** and **physical telemetry*
 ### 5. 🌐 Native Embedded Web Companion Modules
 - **WebView Integration**: Seamlessly hosts web companion applications and interactive tools (`WebViewScreen.kt`) with full-screen edge-to-edge layout, hiding system bars for immersive focus.
 - **Included Tools**:
-  - CBT Screener & Cognitive Restructuring Tool
-  - Audio Meditation Player
-  - Venting & Expression Workspace
-  - AI Virtual Pet Companion (`COMPANION` module)
+  - CBT Screener & Cognitive Restructuring Tool (`/cbt_assessment`)
+  - Audio Meditation & Solfeggio Soundscape Player (`/meditation`)
+  - AI Therapist & Specialized Counseling Companion (`/ai_therapist`)
+  - Kawaii Virtual Pet Companion & Behavioral Engine (`/virtual_pet`)
+  - CBT Mental Wellness Journal (`/wellness_journal`)
 
 ### 6. 👤 Personalized Onboarding & Progress Tracking
 - **Multi-Stage Onboarding**: Engaging visual pagers detailing the application's philosophy.
